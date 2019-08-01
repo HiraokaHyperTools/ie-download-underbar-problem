@@ -42,6 +42,13 @@
                 </li>
             </ul>
         </li>
+        <li>URLDownloadToFile API もまたエラー 0x800C008 を返すことから
+            Process Monitor で挙動分析をしたところ、
+            <code>Temporary Internet Files</code> 配下に
+            <code>DELETE PENDING</code> なフォルダーがありました。
+            <code>C:\Users\USERNAME\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.IE5\9I1B2791</code><br>
+            <code>9I1B2791</code> の文字列は環境により異なります。
+        </li>
     </ul>
 </body>
 
