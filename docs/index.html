@@ -52,6 +52,25 @@
                 <li>このケースでは Windows を再起動すると問題が解消します。</li>
             </ul>
         </li>
+        <li>調査の結果、PcaSvc (Program Compatibility Assistant Service) がハンドルリークをしている可能性が浮かび上がりました。
+            <ul>
+                <li><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/handle" target="_blank">Handle</a>
+                    コマンドを利用し、特定のフォルダ (例: <code>9I1B2791</code>) が svchost.exe によって開かれている事を確認。</li>
+                <li><code>tasklist /svc</code> コマンドで、svchost.exe に関連づいている Windows サービスを確認。PcaSvc 以外にも複数あるのですが…
+                    <a href="https://support.microsoft.com/ja-jp/help/2885210/error-message-when-you-try-to-download-a-file-by-using-internet-explor"
+                        target="_blank">2885210</a>
+                    のファイル情報に <code>Pcaui.dll</code> がありました。
+                    ここで Pca が修正対象と確信しました。
+                </li>
+                <li>回避策は、この svchost.exe を強制終了する事です。
+                    <ul>
+                        <li>しかしそんな事をすると、他の同居サービスまで巻き添えをくらいます。</li>
+                        <li><code>sc config PcaSvc type= own</code> コマンドで PcaSvc サービスだけ独立プロセスで起動するように指示して、
+                            svchost.exe の強制終了の被害を減らす方法が考えられます。</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
     </ul>
 </body>
 
